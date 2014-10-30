@@ -9,7 +9,9 @@ my ($FILE, $K, $A, $T) = @ARGV;
 
 # Part 1: counting
 my %count;
-open(my $fh, $FILE) or die;
+my $fh;
+if ($FILE =~ /\.gz$/) {open($fh, "gunzip -c $FILE |") or die}
+else                  {open($fh, $FILE) or die}
 my $fasta = new FAlite($fh);
 while (my $entry = $fasta->nextEntry) {
 	my $seq = uc $entry->seq;
@@ -20,7 +22,8 @@ while (my $entry = $fasta->nextEntry) {
 close $fh;
 
 # Part 2: finding similarities
-open($fh, $FILE) or die;
+if ($FILE =~ /\.gz$/) {open($fh, "gunzip -c $FILE |") or die}
+else                  {open($fh, $FILE) or die}
 $fasta = new FAlite($fh);
 while (my $entry = $fasta->nextEntry) {
 	my $seq = uc $entry->seq;

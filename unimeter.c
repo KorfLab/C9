@@ -99,7 +99,7 @@ int main (int argc, char ** argv) {
 					d = distance(kmer, kmers->elem[j], K, T);
 					if (d <= T) found++;
 				}
-				printf("%s\t%d\t%d\n", def, i - K, d);
+				printf("%s\t%d\t%d\n", def, i - K, found);
 			}
 		
 		}
