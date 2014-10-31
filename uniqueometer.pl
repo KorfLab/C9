@@ -1,6 +1,7 @@
 #!/usr/bin/perl
 use strict;
 use warnings 'FATAL' => 'all';
+use Time::HiRes;
 use FAlite;
 use Inline C => 'DATA';
 
@@ -8,6 +9,8 @@ die "usage: $0 <fasta file> <K> <anchor> <T>\n" unless @ARGV == 4;
 my ($FILE, $K, $A, $T) = @ARGV;
 
 # Part 1: counting
+print STDERR "beginning counting....";
+my $t1 = Time::HiRes::time;
 my %count;
 my $fh;
 if ($FILE =~ /\.gz$/) {open($fh, "gunzip -c $FILE |") or die}
@@ -20,6 +23,12 @@ while (my $entry = $fasta->nextEntry) {
 	}
 }
 close $fh;
+my $t2 = Time::HiRes::time;
+print STDERR "done\n";
+printf STDERR "%.2f elapsed time\n", $t2 - $t1;
+print STDERR scalar keys %count, " kmers counted\n";
+
+# pruning?
 
 # Part 2: finding similarities
 if ($FILE =~ /\.gz$/) {open($fh, "gunzip -c $FILE |") or die}
